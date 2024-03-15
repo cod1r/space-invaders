@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"build": "npx tsc src/* && cp index.html build/index.html",
+		"build": "npx tsc && cp index.html build/index.html && cp assets/* build/",
 		"fmt": "npx prettier src/* --write"
 	},
 	"dependencies": {
