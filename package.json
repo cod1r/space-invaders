@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"build": "npx tsc src/* && cp index.html build/index.html",
+		"fmt": "npx prettier src/* --write"
+	},
+	"dependencies": {
+		"prettier": "^3.2.5",
+		"typescript": "^5.4.2"
+	}
+}
