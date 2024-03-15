@@ -24,12 +24,6 @@ class Cannon {
   get image() {
     return this.cannonImage
   }
-  set set_x(new_x: number) {
-    this.x = new_x
-  }
-  set set_y(new_y: number) {
-    this.y = new_y
-  }
 }
 
 let cannon = new Cannon()
@@ -49,15 +43,50 @@ shield.src = 'shield-small.png'
 let ufo = new Image()
 ufo.src = 'ufo-small.png'
 
+class Bullet {
+  x = 0
+  y = 0
+  constructor(dx: number, dy: number) {
+    this.x = dx
+    this.y = dy
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI)
+    ctx.fillStyle = 'white'
+    ctx.fill()
+    ctx.stroke()
+  }
+}
+let bullet: Bullet | null = null
+
+let pushLeft = false
+let pushRight = false
 document.addEventListener('keydown', (e) => {
   switch (e.key) {
     case 'ArrowLeft':
-      cannon.set_x = cannon.x - 10
+      pushLeft = true
+      pushRight = false
       break
     case 'ArrowRight':
-      cannon.set_x = cannon.x + 10
+      pushRight = true
+      pushLeft = false
       break
     case ' ':
+      if (bullet === null) {
+        bullet = new Bullet(cannon.x + cannon.image.naturalWidth / 2, cannon.y)
+      }
+      break
+  }
+})
+document.addEventListener('keyup', (e) => {
+  switch (e.key) {
+    case 'ArrowLeft':
+      pushLeft = false
+      break
+    case 'ArrowRight':
+      pushRight = false
       break
   }
 })
@@ -68,7 +97,19 @@ function render() {
   }
   ctx.fillStyle = 'black'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
+  if (pushLeft) {
+    cannon.x -= 10
+  } else if (pushRight) {
+    cannon.x += 10
+  }
   cannon.draw(ctx)
+  if (bullet !== null) {
+    bullet.draw(ctx)
+    bullet.y -= 10
+    if (bullet.y < 0) {
+      bullet = null
+    }
+  }
   requestAnimationFrame(render)
 }
 render()
