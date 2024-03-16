@@ -26,10 +26,27 @@ class Cannon {
   }
 }
 
-let cannon = new Cannon()
+class Invader1 {
+  x = 0
+  y = 0
+  invader1Image
+  constructor() {
+    this.invader1Image = new Image()
+    this.invader1Image.src = 'invader1-small.png'
+    this.invader1Image.addEventListener('load', () => {
+      this.x = canvas.width / 2
+      this.y = canvas.height / 2
+    })
+  }
+  draw(ctx: CanvasRenderingContext2D) {
+    ctx.drawImage(this.invader1Image, this.x, this.y)
+  }
+}
+class Invader2 {}
+class Invader3 {}
 
-let invader1 = new Image()
-invader1.src = 'invader1-small.png'
+let cannon = new Cannon()
+let invader1 = new Invader1()
 
 let invader2 = new Image()
 invader2.src = 'invader2-small.png'
@@ -102,6 +119,7 @@ function render() {
   } else if (pushRight) {
     cannon.x += 10
   }
+  invader1.draw(ctx)
   cannon.draw(ctx)
   if (bullet !== null) {
     bullet.draw(ctx)
